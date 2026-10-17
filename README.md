@@ -11,6 +11,8 @@ learning use classical AI. None of it calls a paid LLM.
 
 ![architecture](docs/architecture.svg)
 
+Editable source: [`docs/architecture.excalidraw`](docs/architecture.excalidraw) (open at excalidraw.com).
+
 ## What it does
 
 | Requirement | How |
