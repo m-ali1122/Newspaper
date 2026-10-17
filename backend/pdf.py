@@ -268,7 +268,6 @@ def render_pdf(edition: dict) -> bytes:
     MAST_H = 150
     top = PH - M - MAST_H
     lead = ed.get("lead") or None
-    lead_h = 250 if lead else 0
 
     def masthead(c, d):
         c.saveState()
@@ -346,9 +345,45 @@ def render_pdf(edition: dict) -> bytes:
                             topPadding=0, bottomPadding=0, id="%s%d" % (prefix, i)))
         return fr
 
+    lead_flow = None
+    lead_h = 0
+    if lead:
+        lh = _clean(lead.get("title")) or "Untitled"
+        fs = 30 if len(lh) < 70 else 26 if len(lh) < 110 else 22 if len(lh) < 150 else 18
+        right = [Paragraph("LEAD STORY \u00b7 " + _e(lead.get("section") or "").upper(), ST["lead_m"]),
+                 Paragraph(_e(lh), _S("lh", fontName=SERIF_B, fontSize=fs, leading=fs * 1.1, spaceAfter=4))]
+        summ = _e(lead.get("summary") or lead.get("body"), 450)
+        if summ:
+            right.append(Paragraph(summ, ST["lead_s"]))
+        by = ["By " + _e(lead.get("source") or "staff")]
+        if lead.get("read_minutes"):
+            by.append("%s min read" % _e(lead.get("read_minutes")))
+        right.append(Paragraph(" \u00b7 ".join(by), ST["lead_m"]))
+        rs = lead.get("reasons") or []
+        if rs:
+            right.append(Paragraph("Why this story: " + _e("; ".join(str(r) for r in rs[:3]), 240),
+                                   _S("lr", fontName=SERIF_I, fontSize=9, leading=11, textColor=GREY,
+                                      spaceAfter=3)))
+        u = _clean(lead.get("url"))
+        if u:
+            right.append(Paragraph('<a href="%s" color="#8a1c1c">%s</a>' % (
+                u.replace("&", "&amp;").replace('"', "%22"), _e(_short_url(u))), ST["link"]))
+        img = _fetch_image(lead.get("image"), W * 0.38, 230)
+        if img:
+            lead_flow = Table([[img, right]], colWidths=[W * 0.4, W * 0.6 - 4])
+        else:
+            lead_flow = Table([[right]], colWidths=[W])
+        lead_flow.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
+                                       ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                                       ("RIGHTPADDING", (0, 0), (0, 0), 12 if img else 0),
+                                       ("RIGHTPADDING", (1, 0), (-1, -1), 0),
+                                       ("TOPPADDING", (0, 0), (-1, -1), 0),
+                                       ("BOTTOMPADDING", (0, 0), (-1, -1), 4)]))
+        lead_h = lead_flow.wrap(W, 10000)[1] + 6
+
     lead_frame = Frame(M, y0 - lead_h, W, lead_h, leftPadding=0, rightPadding=0,
-                       topPadding=2, bottomPadding=0, id="lead")
-    first_frames = ([lead_frame] if lead else []) + cols(y0 - lead_h - 6, bottom, "f")
+                       topPadding=0, bottomPadding=0, id="lead")
+    first_frames = ([lead_frame] if lead_flow else []) + cols(y0 - lead_h - 8, bottom, "f")
     doc = BaseDocTemplate(buf, pagesize=A3, leftMargin=M, rightMargin=M, topMargin=M,
                           bottomMargin=M, title=title, author="The Morning Paper")
     doc.addPageTemplates([
@@ -356,42 +391,9 @@ def render_pdf(edition: dict) -> bytes:
         PageTemplate(id="later", frames=cols(PH - M - 30, bottom, "l"), onPage=later),
     ])
 
-    story = []
-    if lead:
-        story.append(NextPageTemplate("later"))
-        right = []
-        right.append(Paragraph("LEAD STORY · " + _e(lead.get("section") or "").upper(), ST["lead_m"]))
-        right.append(Paragraph(_e(lead.get("title")) or "Untitled", ST["lead_h"]))
-        summ = _e(lead.get("summary") or lead.get("body"), 600)
-        if summ:
-            right.append(Paragraph(summ, ST["lead_s"]))
-        by = ["By " + _e(lead.get("source") or "staff")]
-        if lead.get("read_minutes"):
-            by.append("%s min read" % _e(lead.get("read_minutes")))
-        right.append(Paragraph(" · ".join(by), ST["lead_m"]))
-        rs = lead.get("reasons") or []
-        if rs:
-            right.append(Paragraph("Why this story: " + _e("; ".join(str(r) for r in rs[:3]), 300),
-                                   _S("lr", fontName=SERIF_I, fontSize=9, leading=11, textColor=GREY,
-                                      spaceAfter=3)))
-        u = _clean(lead.get("url"))
-        if u:
-            right.append(Paragraph('<a href="%s" color="#8a1c1c">%s</a>' % (
-                u.replace("&", "&amp;").replace('"', "%22"), _e(_short_url(u))), ST["link"]))
-        img = _fetch_image(lead.get("image"), W * 0.38, lead_h - 20)
-        if img:
-            t = Table([[img, right]], colWidths=[W * 0.4, W * 0.6 - 4])
-            t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
-                                   ("LEFTPADDING", (0, 0), (0, 0), 0),
-                                   ("RIGHTPADDING", (0, 0), (0, 0), 12),
-                                   ("LEFTPADDING", (1, 0), (1, 0), 0), ("RIGHTPADDING", (1, 0), (1, 0), 0),
-                                   ("TOPPADDING", (0, 0), (-1, -1), 0)]))
-            story.append(t)
-        else:
-            story += right
-        story.append(FrameBreak())
-    else:
-        story.append(NextPageTemplate("later"))
+    story = [NextPageTemplate("later")]
+    if lead_flow:
+        story += [lead_flow, FrameBreak()]
 
     side = _sidebar(ed, colw)
     # put the first half of the sidebar (briefs, serendipity) at the head of column one

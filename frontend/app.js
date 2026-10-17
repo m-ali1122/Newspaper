@@ -11,6 +11,8 @@ const cap = s => String(s||'').replace(/^./, c => c.toUpperCase());
 let uid = null, curEdition = null, observers = [], lastTranscriptForRebuild = false;
 try { uid = localStorage.getItem('mp_uid'); } catch(e){}
 function setUid(u){ uid = u; try { localStorage.setItem('mp_uid', u); } catch(e){} }
+// ?user=<id> opens a given reader's paper (demo links)
+{ const q = new URLSearchParams(location.search).get('user'); if (q) setUid(q); }
 
 /* ---------- utils ---------- */
 function toast(msg, err=false, ms=3800){

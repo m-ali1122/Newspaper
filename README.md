@@ -34,7 +34,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -m spacy download en_core_web_sm
 .venv/bin/python -m backend.ingest          # pull today's news (falls back to the NAaaS archive offline)
 .venv/bin/uvicorn backend.app:app --port 8900
-# open http://localhost:8900
+# open http://localhost:8900  (demo reader: POST /api/demo/seed, then http://localhost:8900/?user=usaid)
 ```
 
 ## Layout
