@@ -66,7 +66,7 @@ function viewWelcome(){
     const dots = Array.from({length:total},(_,i)=>`<i class="${i<=S.step?'on':''}"></i>`).join('');
     let body = '';
     if (S.step===0) body = `<h2>First, who's reading?</h2><p class="lede">Every paper needs a masthead. Yours carries your name.</p>
-      <label class="field"><span>Your name</span><input type="text" id="f-name" value="${esc(S.name)}" placeholder="e.g. Usaid" autofocus></label>
+      <label class="field"><span>Your name</span><input type="text" id="f-name" value="${esc(S.name)}" placeholder="e.g. Ali" autofocus></label>
       <label class="field"><span>Your city</span><input type="text" id="f-city" value="${esc(S.city)}" placeholder="e.g. Lahore"></label>`;
     if (S.step===1) body = `<h2>What belongs on your front page?</h2><p class="lede">Tap the sections you care about. Pick as many as you like.</p>
       <div class="sgrid">${SECTIONS.map(s=>`<div class="scard ${S.sections.has(s)?'on':''}" data-s="${s}" role="button" tabindex="0"><span class="e">${EMOJI[s]}</span>${s}</div>`).join('')}</div>`;

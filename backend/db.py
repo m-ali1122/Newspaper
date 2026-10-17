@@ -1,5 +1,7 @@
 """SQLite storage shared by every module. See docs/CONTRACT.md for shapes."""
 import json
+import os
+import shutil
 import sqlite3
 import threading
 from datetime import datetime, timezone
@@ -7,6 +9,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = ROOT / "data" / "paper.db"
+if os.environ.get("VERCEL"):
+    # Serverless FS is read-only except /tmp: start from the bundled snapshot.
+    _tmp = Path("/tmp/paper.db")
+    if not _tmp.exists() and DB_PATH.exists():
+        shutil.copy(DB_PATH, _tmp)
+    DB_PATH = _tmp
 SECTIONS = ["world", "pakistan", "politics", "business", "technology",
             "science", "health", "climate", "sports", "culture"]
 

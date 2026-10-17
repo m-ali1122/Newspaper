@@ -1,8 +1,4 @@
 """NLP enrichment: section classifier, NER, keywords, sentiment.
-# Ported from NAaaS: NAaaS-python/app/services/sentiment_service.py (TextBlob+VADER hybrid)
-# Ported from NAaaS: graph-building-service-newsnet/services/entity/entity_extractor.py (spaCy NER)
-# Ported from NAaaS: graph-building-service-newsnet/services/entity/entity_normalizer.py
-# Ported from NAaaS: NAaaS-python/app/services/topic_service.py (TF-IDF keywords)
 """
 import re
 from collections import Counter

@@ -1,131 +1,232 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" font-family="Georgia, serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 990" width="1620" height="990" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
   <defs>
-    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker>
-    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0f1f"/><stop offset="1" stop-color="#111a33"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0" r="0.8">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.10"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#ffffff" stroke-opacity="0.025"/>
+    </pattern>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cbd5e1"/></marker>
+    <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fb7185"/></marker>
     <style>
-      .box{fill:#fffdf6;stroke:#222;stroke-width:1.5}
-      .naas{fill:#eef3fb;stroke:#2b4f8a;stroke-width:1.5}
-      .h{font-size:15px;font-weight:bold;fill:#111}
-      .t{font-size:12px;fill:#333}
-      .lab{font-size:11px;fill:#555;font-style:italic}
-      .e{stroke:#222;stroke-width:1.4;fill:none;marker-end:url(#a)}
-      .fb{stroke:#b3261e;stroke-width:2;fill:none;stroke-dasharray:6 4;marker-end:url(#r)}
+      .panel{fill:#0f172a;fill-opacity:.72;stroke-width:1.4}
+      .card{fill:#16213d;stroke:#ffffff;stroke-opacity:.08}
+      .lane{font-size:12px;font-weight:700;letter-spacing:2.2px}
+      .t{font-size:15.5px;font-weight:700;fill:#f1f5f9}
+      .b{font-size:12.5px;fill:#94a3b8}
+      .m{font-family:'JetBrains Mono',Consolas,'Courier New',monospace;font-size:12px;fill:#a7f3d0}
+      .flow{stroke:#cbd5e1;stroke-width:1.8;fill:none;marker-end:url(#ar)}
+      .loop{stroke:#fb7185;stroke-width:2;fill:none;stroke-dasharray:7 5;marker-end:url(#arR)}
+      .lbl{font-size:11.5px;fill:#cbd5e1;font-style:italic}
+      .pill{fill:#1e293b;stroke:#334155}
+      .pt{font-size:12.5px;fill:#e2e8f0;font-weight:600}
     </style>
   </defs>
-  <rect width="1100" height="700" fill="#f6f1e4"/>
-  <text x="550" y="38" text-anchor="middle" font-size="26" font-weight="bold">The Morning Paper — Architecture</text>
-  <line x1="60" y1="50" x2="1040" y2="50" stroke="#222" stroke-width="2"/>
 
-  <!-- Sources -->
-  <rect class="box" x="30" y="90" width="200" height="120"/>
-  <text class="h" x="45" y="113">Sources</text>
-  <text class="t" x="45" y="135">~15 live RSS feeds (BBC,</text>
-  <text class="t" x="45" y="151">Guardian, Dawn, Al Jazeera,</text>
-  <text class="t" x="45" y="167">Ars, HN, NASA …)</text>
-  <text class="t" x="45" y="187">NAaaS Express Tribune</text>
-  <text class="t" x="45" y="203">archive (7.5k CSVs)</text>
+  <rect width="1620" height="990" fill="url(#bg)"/>
+  <rect width="1620" height="990" fill="url(#grid)"/>
+  <rect width="1620" height="500" fill="url(#glow)"/>
 
-  <!-- Ingest -->
-  <rect class="naas" x="290" y="90" width="230" height="150"/>
-  <text class="h" x="305" y="113">Ingest + NLP enrichment</text>
-  <text class="t" x="305" y="135">concurrent fetch, dedupe (sha1)</text>
-  <text class="t" x="305" y="153">spaCy NER + normaliser ★</text>
-  <text class="t" x="305" y="171">VADER+TextBlob sentiment ★</text>
-  <text class="t" x="305" y="189">TF-IDF / NMF keywords ★</text>
-  <text class="t" x="305" y="207">lexicon section classifier</text>
-  <text class="lab" x="305" y="230">★ ported from NAaaS</text>
+  <!-- Title -->
+  <text x="60" y="78" font-size="34" font-weight="800" fill="#f8fafc" font-family="Georgia, 'Times New Roman', serif">The Morning Paper</text>
+  <text x="372" y="78" font-size="34" font-weight="300" fill="#64748b">— System Architecture</text>
+  <text x="60" y="110" font-size="15" fill="#94a3b8">A personal newspaper that learns from every read, skip, like and spoken request. Classical AI end to end — no paid LLM calls.</text>
+  <g transform="translate(1340,58)">
+    <rect width="220" height="34" rx="17" fill="#052e2b" stroke="#34d399" stroke-opacity=".6"/>
+    <circle cx="20" cy="17" r="5" fill="#34d399"/>
+    <text x="34" y="22" font-size="13" font-weight="700" fill="#a7f3d0">Live on Vercel · FastAPI</text>
+  </g>
 
-  <!-- Store -->
-  <rect class="box" x="590" y="90" width="200" height="150"/>
-  <text class="h" x="605" y="113">SQLite store</text>
-  <text class="t" x="605" y="135">articles</text>
-  <text class="t" x="605" y="153">profiles (weights, Beta</text>
-  <text class="t" x="605" y="169">  bandit, history)</text>
-  <text class="t" x="605" y="187">events (click, dwell, like,</text>
-  <text class="t" x="605" y="203">  skip, voice more/less)</text>
-  <text class="t" x="605" y="221">editions (archive)</text>
+  <!-- ===== Lane 1: Sources ===== -->
+  <rect class="panel" x="60" y="160" width="240" height="490" rx="16" stroke="#f59e0b" stroke-opacity=".55" filter="url(#sh)"/>
+  <text class="lane" x="80" y="192" fill="#fbbf24">① SOURCES</text>
+  <rect class="card" x="76" y="214" width="208" height="118" rx="11"/>
+  <rect x="76" y="214" width="4" height="118" rx="2" fill="#f59e0b"/>
+  <text class="t" x="94" y="242">Live RSS feeds</text>
+  <text class="b" x="94" y="266">World, Pakistan, business,</text>
+  <text class="b" x="94" y="284">tech, science, sport …</text>
+  <text class="b" x="94" y="308">feedparser · httpx</text>
+  <rect class="card" x="76" y="350" width="208" height="118" rx="11"/>
+  <rect x="76" y="350" width="4" height="118" rx="2" fill="#f59e0b"/>
+  <text class="t" x="94" y="378">News archive</text>
+  <text class="b" x="94" y="402">Express Tribune corpus</text>
+  <text class="b" x="94" y="420">historical articles,</text>
+  <text class="b" x="94" y="438">offline fallback</text>
+  <rect class="card" x="76" y="486" width="208" height="146" rx="11"/>
+  <rect x="76" y="486" width="4" height="146" rx="2" fill="#f59e0b"/>
+  <text class="t" x="94" y="514">Reader onboarding</text>
+  <text class="b" x="94" y="538">Name &amp; city → section</text>
+  <text class="b" x="94" y="556">cards → "in your own words"</text>
+  <text class="b" x="94" y="574">(typed or spoken) →</text>
+  <text class="b" x="94" y="592">reading time &amp; tone</text>
 
-  <!-- KG -->
-  <rect class="naas" x="850" y="90" width="220" height="150"/>
-  <text class="h" x="865" y="113">Knowledge graph</text>
-  <text class="t" x="865" y="135">entity co-occurrence graph</text>
-  <text class="t" x="865" y="153">(networkx, PageRank)</text>
-  <text class="t" x="865" y="171">story-chain threads ★</text>
-  <text class="t" x="865" y="189">interest expansion via</text>
-  <text class="t" x="865" y="205">  graph neighbours</text>
+  <!-- ===== Lane 2: Ingest & NLP ===== -->
+  <rect class="panel" x="360" y="160" width="280" height="490" rx="16" stroke="#38bdf8" stroke-opacity=".55" filter="url(#sh)"/>
+  <text class="lane" x="380" y="192" fill="#7dd3fc">② INGEST &amp; NLP</text>
+  <g>
+    <rect class="card" x="376" y="214" width="248" height="70" rx="11"/>
+    <text class="t" x="394" y="242">Named entities</text>
+    <text class="b" x="394" y="264">spaCy NER + normalisation</text>
+    <rect class="card" x="376" y="298" width="248" height="70" rx="11"/>
+    <text class="t" x="394" y="326">Sentiment &amp; tone</text>
+    <text class="b" x="394" y="348">VADER + TextBlob blend</text>
+    <rect class="card" x="376" y="382" width="248" height="70" rx="11"/>
+    <text class="t" x="394" y="410">Keywords &amp; topics</text>
+    <text class="b" x="394" y="432">TF-IDF · NMF topic model</text>
+    <rect class="card" x="376" y="466" width="248" height="70" rx="11"/>
+    <text class="t" x="394" y="494">Section classifier</text>
+    <text class="b" x="394" y="516">10 sections, keyword priors</text>
+    <rect class="card" x="376" y="550" width="248" height="82" rx="11"/>
+    <text class="t" x="394" y="578">Intent grammar</text>
+    <text class="b" x="394" y="600">"more climate, less cricket"</text>
+    <text class="b" x="394" y="618">→ structured preferences</text>
+  </g>
 
-  <!-- Ranker -->
-  <rect class="box" x="290" y="310" width="300" height="170"/>
-  <text class="h" x="305" y="333">Editor (ranking engine)</text>
-  <text class="t" x="305" y="355">TF-IDF cosine vs interest document</text>
-  <text class="t" x="305" y="373">+ section weights + recency decay</text>
-  <text class="t" x="305" y="391">+ Thompson sampling (Beta bandit)</text>
-  <text class="t" x="305" y="409">avoid-filter, near-dup removal</text>
-  <text class="t" x="305" y="427">MMR diversity re-rank</text>
-  <text class="t" x="305" y="445">ε-exploration "off your beaten path"</text>
-  <text class="t" x="305" y="463">explainable reasons per story</text>
+  <!-- ===== Lane 3: Storage & Knowledge ===== -->
+  <rect class="panel" x="700" y="160" width="270" height="490" rx="16" stroke="#a78bfa" stroke-opacity=".55" filter="url(#sh)"/>
+  <text class="lane" x="720" y="192" fill="#c4b5fd">③ MEMORY &amp; KNOWLEDGE</text>
+  <rect class="card" x="716" y="214" width="238" height="196" rx="11"/>
+  <rect x="716" y="214" width="4" height="196" rx="2" fill="#a78bfa"/>
+  <text class="t" x="734" y="242">SQLite store</text>
+  <g font-size="12.5" fill="#cbd5e1">
+    <rect x="734" y="258" width="96" height="26" rx="6" fill="#241b45"/><text x="746" y="276">articles</text>
+    <rect x="838" y="258" width="98" height="26" rx="6" fill="#241b45"/><text x="850" y="276">entities</text>
+    <rect x="734" y="292" width="96" height="26" rx="6" fill="#241b45"/><text x="746" y="310">profiles</text>
+    <rect x="838" y="292" width="98" height="26" rx="6" fill="#241b45"/><text x="850" y="310">events</text>
+    <rect x="734" y="326" width="96" height="26" rx="6" fill="#241b45"/><text x="746" y="344">editions</text>
+    <rect x="838" y="326" width="98" height="26" rx="6" fill="#241b45"/><text x="850" y="344">history</text>
+  </g>
+  <text class="b" x="734" y="380">One shared store; every</text>
+  <text class="b" x="734" y="398">signal is an event row</text>
+  <rect class="card" x="716" y="440" width="238" height="192" rx="11"/>
+  <rect x="716" y="440" width="4" height="192" rx="2" fill="#a78bfa"/>
+  <text class="t" x="734" y="468">Knowledge graph</text>
+  <text class="b" x="734" y="490">networkx entity co-occurrence</text>
+  <!-- mini graph -->
+  <g stroke="#a78bfa" stroke-opacity=".6" stroke-width="1.3">
+    <line x1="770" y1="540" x2="830" y2="515"/><line x1="830" y1="515" x2="900" y2="535"/>
+    <line x1="770" y1="540" x2="820" y2="570"/><line x1="820" y1="570" x2="900" y2="535"/>
+    <line x1="830" y1="515" x2="820" y2="570"/><line x1="900" y1="535" x2="925" y2="580"/>
+  </g>
+  <g fill="#c4b5fd"><circle cx="770" cy="540" r="6"/><circle cx="830" cy="515" r="9"/><circle cx="900" cy="535" r="7"/><circle cx="820" cy="570" r="5"/><circle cx="925" cy="580" r="4"/></g>
+  <text class="b" x="734" y="608">PageRank salience · story</text>
+  <text class="b" x="734" y="624">threads · interest expansion</text>
 
-  <!-- Edition -->
-  <rect class="box" x="660" y="310" width="210" height="170"/>
-  <text class="h" x="675" y="333">Edition builder</text>
-  <text class="t" x="675" y="355">lead · sections · briefs</text>
-  <text class="t" x="675" y="373">serendipity · story threads</text>
-  <text class="t" x="675" y="391">knowledge map · mood</text>
-  <text class="t" x="675" y="409">personal greeting</text>
-  <text class="t" x="675" y="427">one per reader per day</text>
+  <!-- ===== Lane 4: The Editor ===== -->
+  <rect class="panel" x="1030" y="160" width="270" height="490" rx="16" stroke="#34d399" stroke-opacity=".55" filter="url(#sh)"/>
+  <text class="lane" x="1050" y="192" fill="#6ee7b7">④ THE EDITOR</text>
+  <rect class="card" x="1046" y="214" width="238" height="236" rx="11"/>
+  <rect x="1046" y="214" width="4" height="236" rx="2" fill="#34d399"/>
+  <text class="t" x="1064" y="242">Ranking engine</text>
+  <rect x="1060" y="256" width="212" height="104" rx="8" fill="#062a22"/>
+  <text class="m" x="1070" y="278">score = α·cos(tfidf, you)</text>
+  <text class="m" x="1070" y="298">      + β·section_weight</text>
+  <text class="m" x="1070" y="318">      + γ·Thompson(Beta)</text>
+  <text class="m" x="1070" y="338">      + δ·recency + prior</text>
+  <text class="b" x="1064" y="388">avoid-filter → de-duplicate</text>
+  <text class="b" x="1064" y="406">→ MMR diversity re-rank</text>
+  <text class="b" x="1064" y="430">every pick has a "why this?"</text>
+  <rect class="card" x="1046" y="480" width="238" height="152" rx="11"/>
+  <rect x="1046" y="480" width="4" height="152" rx="2" fill="#34d399"/>
+  <text class="t" x="1064" y="508">Edition builder</text>
+  <text class="b" x="1064" y="532">Lead story, sections, In Brief</text>
+  <text class="b" x="1064" y="550">fitted to reading-time budget</text>
+  <text class="b" x="1064" y="574">"Off Your Beaten Path"</text>
+  <text class="b" x="1064" y="592">ε-greedy serendipity picks</text>
+  <text class="b" x="1064" y="616">Mood meter · daily archive</text>
 
-  <!-- Outputs -->
-  <rect class="box" x="930" y="300" width="150" height="80"/>
-  <text class="h" x="945" y="325">Web reader</text>
-  <text class="t" x="945" y="345">FastAPI + vanilla JS</text>
-  <text class="t" x="945" y="362">archive · insights</text>
-  <rect class="box" x="930" y="400" width="150" height="80"/>
-  <text class="h" x="945" y="425">Broadsheet PDF</text>
-  <text class="t" x="945" y="445">reportlab, 3-column,</text>
-  <text class="t" x="945" y="462">clickable links</text>
+  <!-- ===== Lane 5: Delivery ===== -->
+  <rect class="panel" x="1360" y="160" width="200" height="490" rx="16" stroke="#f472b6" stroke-opacity=".55" filter="url(#sh)"/>
+  <text class="lane" x="1380" y="192" fill="#f9a8d4">⑤ DELIVERY</text>
+  <rect class="card" x="1376" y="214" width="168" height="94" rx="11"/>
+  <text class="t" x="1392" y="242">Web reader</text>
+  <text class="b" x="1392" y="264">Newspaper layout,</text>
+  <text class="b" x="1392" y="282">tracked click-through</text>
+  <rect class="card" x="1376" y="320" width="168" height="94" rx="11"/>
+  <text class="t" x="1392" y="348">Broadsheet PDF</text>
+  <text class="b" x="1392" y="370">reportlab, 3 columns,</text>
+  <text class="b" x="1392" y="388">clickable links</text>
+  <rect class="card" x="1376" y="426" width="168" height="94" rx="11"/>
+  <text class="t" x="1392" y="454">Voice editor</text>
+  <text class="b" x="1392" y="476">Web Speech STT →</text>
+  <text class="b" x="1392" y="494">intent → TTS reply</text>
+  <rect class="card" x="1376" y="532" width="168" height="100" rx="11"/>
+  <text class="t" x="1392" y="560">Insights</text>
+  <text class="b" x="1392" y="582">Profile drift over</text>
+  <text class="b" x="1392" y="600">time · knowledge map</text>
 
-  <!-- Reader -->
-  <rect class="box" x="560" y="560" width="230" height="110"/>
-  <text class="h" x="575" y="583">Reader</text>
-  <text class="t" x="575" y="605">clicks through, likes, skips,</text>
-  <text class="t" x="575" y="621">dwells (IntersectionObserver),</text>
-  <text class="t" x="575" y="637">downloads PDF</text>
+  <!-- ===== Main flow arrows ===== -->
+  <path class="flow" d="M284 273 H372"/>
+  <path class="flow" d="M284 409 H372"/>
+  <text class="lbl" x="300" y="262">raw</text>
+  <path class="flow" d="M624 300 H712"/>
+  <text class="lbl" x="638" y="290">enriched</text>
+  <path class="flow" d="M835 410 V436"/>
+  <path class="flow" d="M954 300 H1042"/>
+  <text class="lbl" x="962" y="290">candidates</text>
+  <path class="flow" d="M954 536 H1042"/>
+  <text class="lbl" x="964" y="526">graph priors</text>
+  <path class="flow" d="M1165 450 V476"/>
+  <path class="flow" d="M1284 556 H1310 V261 H1372"/>
+  <path class="flow" d="M1310 367 H1372"/>
+  <path class="flow" d="M1310 473 H1372"/>
+  <path class="flow" d="M1310 582 H1372"/>
+  <!-- onboarding -> intent grammar -->
+  <path class="flow" d="M284 591 H372"/>
 
-  <!-- Voice -->
-  <rect class="box" x="30" y="560" width="300" height="110"/>
-  <text class="h" x="45" y="583">Voice editor harness</text>
-  <text class="t" x="45" y="605">Web Speech API → rule-based intent</text>
-  <text class="t" x="45" y="621">grammar ("more AI, less cricket",</text>
-  <text class="t" x="45" y="637">"read me the headlines") → profile</text>
-  <text class="t" x="45" y="653">update → spoken reply (TTS)</text>
+  <!-- ===== Learning loop ===== -->
+  <rect class="panel" x="360" y="712" width="1200" height="150" rx="16" stroke="#fb7185" stroke-opacity=".6" filter="url(#sh)"/>
+  <text class="lane" x="380" y="744" fill="#fda4af">⑥ LEARNING LOOP  ·  the paper gets better every day</text>
+  <g>
+    <rect class="card" x="380" y="762" width="262" height="80" rx="11"/>
+    <text class="t" x="398" y="790">Reader signals</text>
+    <text class="b" x="398" y="812">click · dwell · like · skip</text>
+    <text class="b" x="398" y="830">voice "more / less / avoid"</text>
+    <rect class="card" x="676" y="762" width="262" height="80" rx="11"/>
+    <text class="t" x="694" y="790">Rocchio update</text>
+    <text class="b" x="694" y="812">keyword · entity · section</text>
+    <text class="b" x="694" y="830">weights nudged per signal</text>
+    <rect class="card" x="972" y="762" width="262" height="80" rx="11"/>
+    <text class="t" x="990" y="790">Beta bandit per section</text>
+    <text class="b" x="990" y="812">Thompson sampling balances</text>
+    <text class="b" x="990" y="830">exploit vs. explore</text>
+    <rect class="card" x="1268" y="762" width="272" height="80" rx="11"/>
+    <text class="t" x="1286" y="790">Updated profile</text>
+    <text class="b" x="1286" y="812">written back to SQLite →</text>
+    <text class="b" x="1286" y="830">tomorrow's edition</text>
+  </g>
+  <path class="flow" d="M642 802 H672"/>
+  <path class="flow" d="M938 802 H968"/>
+  <path class="flow" d="M1234 802 H1264"/>
+  <!-- delivery -> signals -->
+  <path class="loop" d="M1460 650 V690 H511 V758"/>
+  <text class="lbl" x="1100" y="682" fill="#fda4af">every interaction is a training signal</text>
+  <!-- profile -> sqlite profiles -->
+  <path class="loop" d="M1404 762 V700 H995 V380 H958"/>
+  <text class="lbl" x="1000" y="372" fill="#fda4af">profile</text>
+  <!-- onboarding seeds profile -->
+  <path class="loop" d="M180 632 V802 H376"/>
+  <text class="lbl" x="196" y="790" fill="#fda4af">seeds profile</text>
 
-  <!-- Onboarding -->
-  <rect class="box" x="30" y="330" width="200" height="120"/>
-  <text class="h" x="45" y="353">Onboarding</text>
-  <text class="t" x="45" y="375">section cards, keywords,</text>
-  <text class="t" x="45" y="391">"in your own words" (voice),</text>
-  <text class="t" x="45" y="407">reading time, tone →</text>
-  <text class="t" x="45" y="423">seeded profile + KG expansion</text>
-
-  <!-- edges -->
-  <path class="e" d="M230,150 L288,150"/>
-  <path class="e" d="M520,165 L588,165"/>
-  <path class="e" d="M790,165 L848,165"/>
-  <path class="e" d="M690,240 L520,308"/>
-  <path class="e" d="M960,240 L800,308"/>
-  <path class="e" d="M590,395 L658,395"/>
-  <path class="e" d="M870,370 L928,345"/>
-  <path class="e" d="M870,420 L928,440"/>
-  <path class="e" d="M1000,480 L780,560"/>
-  <path class="e" d="M230,390 L288,390"/>
-  <text class="lab" x="300" y="300">profile + candidates</text>
-
-  <!-- feedback loop -->
-  <path class="fb" d="M560,620 C460,620 470,540 470,486"/>
-  <path class="fb" d="M330,615 L420,615 C440,615 440,560 430,486"/>
-  <path class="fb" d="M790,600 C860,600 760,260 700,242"/>
-  <text x="840" y="545" font-size="13" fill="#b3261e" font-weight="bold">Learning loop:</text>
-  <text x="840" y="562" font-size="12" fill="#b3261e">Rocchio update of keyword /</text>
-  <text x="840" y="578" font-size="12" fill="#b3261e">entity / section weights +</text>
-  <text x="840" y="594" font-size="12" fill="#b3261e">Beta(a,b) bandit update</text>
+  <!-- ===== Footer stack ===== -->
+  <text class="lane" x="60" y="912" fill="#64748b">STACK</text>
+  <g>
+    <rect class="pill" x="130" y="894" width="96" height="28" rx="14"/><text class="pt" x="146" y="913">Python 3.12</text>
+    <rect class="pill" x="236" y="894" width="132" height="28" rx="14"/><text class="pt" x="252" y="913">FastAPI · uvicorn</text>
+    <rect class="pill" x="378" y="894" width="72" height="28" rx="14"/><text class="pt" x="394" y="913">SQLite</text>
+    <rect class="pill" x="460" y="894" width="104" height="28" rx="14"/><text class="pt" x="476" y="913">scikit-learn</text>
+    <rect class="pill" x="574" y="894" width="84" height="28" rx="14"/><text class="pt" x="590" y="913">networkx</text>
+    <rect class="pill" x="668" y="894" width="66" height="28" rx="14"/><text class="pt" x="684" y="913">spaCy</text>
+    <rect class="pill" x="744" y="894" width="132" height="28" rx="14"/><text class="pt" x="760" y="913">VADER · TextBlob</text>
+    <rect class="pill" x="886" y="894" width="86" height="28" rx="14"/><text class="pt" x="902" y="913">reportlab</text>
+    <rect class="pill" x="982" y="894" width="214" height="28" rx="14"/><text class="pt" x="998" y="913">Vanilla JS · Web Speech API</text>
+    <rect class="pill" x="1206" y="894" width="190" height="28" rx="14" fill="#052e2b" stroke="#34d399"/><text class="pt" x="1222" y="913" fill="#a7f3d0">Vercel serverless</text>
+  </g>
+  <text x="60" y="958" font-size="12" fill="#475569">Flow: sources → NLP enrichment → shared memory + knowledge graph → ranked, diversified edition → web / PDF / voice → reader signals → learned profile.</text>
 </svg>

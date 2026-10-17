@@ -8,15 +8,13 @@ Run: `.venv/bin/uvicorn backend.app:app --port 8900` from repo root (backend is 
 Storage: SQLite at `data/paper.db` via `backend/db.py` (owned by orchestrator, already written).
 NO paid LLM API keys are available — everything is classical AI / NLP / IR / graphs.
 
-## Reuse from NAaaS (`/home/usaid/Desktop/NAaaS`)
-- Sentiment: `NAaaS-python/app/services/sentiment_service.py` (TextBlob+VADER hybrid) → port.
-- Topics: `NAaaS-python/app/services/topic_service.py` (TF-IDF + NMF∩LDA) → port.
-- NER: `graph-building-service-newsnet/services/entity/entity_extractor.py` (spaCy; use `en_core_web_sm`).
-- Entity normalisation: `graph-building-service-newsnet/services/entity/entity_normalizer.py`.
-- Story chains: `graph-building-service-newsnet/services/story_chain/story_chain_builder.py` (idea: entity-overlap chains over time).
-- Archive corpus: `NAaaS/scrapped_data/Scrapped News/<year>/<YYYY-MM-DD>/<section>.csv`
-  columns `Header,Summary,Detail,Link,Category,CreationDate,Pic_url` (Express Tribune, 7.5k files).
-Every ported file keeps a header comment `# Ported from NAaaS: <path>`.
+## NLP building blocks
+- Sentiment: TextBlob+VADER hybrid.
+- Topics: TF-IDF + NMF.
+- NER: spaCy `en_core_web_sm`, with entity normalisation.
+- Story chains: entity-overlap chains over time.
+- Archive corpus: `data/archive/<year>/<YYYY-MM-DD>/<section>.csv` (override with `ARCHIVE_ROOT`)
+  columns `Header,Summary,Detail,Link,Category,CreationDate,Pic_url` (Express Tribune).
 
 ## Sections (closed vocabulary)
 `SECTIONS = ["world","pakistan","politics","business","technology","science","health","climate","sports","culture"]`
@@ -44,7 +42,7 @@ actions: `click` (opened original), `read` (dwell secs in value), `like`, `disli
 
 ## Edition dict (`db.save_edition/get_edition`), id = f"{user_id}-{YYYY-MM-DD}"
 ```
-id, user_id, date, generated_at, title (e.g. "The Usaid Morning Post"), edition_no:int,
+id, user_id, date, generated_at, title (e.g. "The Ali Morning Post"), edition_no:int,
 greeting: str, lead: ArticleCard, sections:[{"name":str,"articles":[ArticleCard]}],
 briefs:[ArticleCard] (short "in brief" column), serendipity:[ArticleCard] (exploration picks, reasons say why),
 threads:[{"entity":str,"articles":[{"id","title","date","url"}]}]  (story chains),
@@ -57,7 +55,7 @@ mood:{"positive":n,"neutral":n,"negative":n}, word_of_day? (optional), stats:{ca
 - `backend/nlp.py` + `backend/ingest.py` + `backend/kg.py` — **Agent Ingest/KG**
   - `nlp.enrich(article: dict) -> dict` (fills section if missing, entities, keywords, sentiment)
   - `nlp.classify_section(title, text, hint=None) -> str`
-  - `ingest.refresh(max_per_feed=25, archive_days=3) -> {"live":n,"archive":n,"total":n}` (live RSS + NAaaS archive; must work offline via archive)
+  - `ingest.refresh(max_per_feed=25, archive_days=3) -> {"live":n,"archive":n,"total":n}` (live RSS + news archive; must work offline via archive)
   - `kg.build_graph(articles, profile=None) -> {"nodes","edges"}`  (entity co-occurrence, networkx, PageRank weights, top ~40 nodes)
   - `kg.story_threads(articles_today, all_articles, max_threads=4) -> [threads]`
   - `kg.related_entities(entity, k=5) -> [str]` (neighbours in global KG; used for interest expansion)

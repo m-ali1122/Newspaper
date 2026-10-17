@@ -4,10 +4,9 @@ One personal newspaper, every morning. It gathers articles from across the web, 
 what *you* care about, and sets them as a newspaper you can read on the web or download
 as a broadsheet PDF. The more you read, skip, like, and talk to it, the better it gets.
 
-The NLP and knowledge-graph layer is reused from our earlier **NAaaS (News Analytics as a
-Service)** project: spaCy NER and entity normalisation, VADER+TextBlob sentiment,
-TF-IDF/NMF topics, story-chain building, and the Express Tribune archive. The ranking and
-learning use classical AI. None of it calls a paid LLM.
+The NLP and knowledge-graph layer covers spaCy NER and entity normalisation, VADER+TextBlob
+sentiment, TF-IDF/NMF topics, story-chain building, and an Express Tribune news archive. The
+ranking and learning use classical AI. None of it calls a paid LLM.
 
 ![architecture](docs/architecture.svg)
 
@@ -32,9 +31,9 @@ Every card has human-readable reasons.
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -m spacy download en_core_web_sm
-.venv/bin/python -m backend.ingest          # pull today's news (falls back to the NAaaS archive offline)
+.venv/bin/python -m backend.ingest          # pull today's news (falls back to the local news archive offline)
 .venv/bin/uvicorn backend.app:app --port 8900
-# open http://localhost:8900  (demo reader: POST /api/demo/seed, then http://localhost:8900/?user=usaid)
+# open http://localhost:8900  (demo reader: POST /api/demo/seed, then http://localhost:8900/?user=ali)
 ```
 
 ## Layout
@@ -48,7 +47,7 @@ docs/     CONTRACT.md (module interfaces) · architecture.svg
 ```mermaid
 flowchart LR
   RSS[Live RSS feeds] --> ING[Ingest + NLP<br/>NER, sentiment, keywords, section]
-  ARC[NAaaS archive] --> ING
+  ARC[News archive] --> ING
   ING --> DB[(SQLite)]
   DB --> KG[Knowledge graph<br/>PageRank, story threads]
   DB --> RANK[Editor: TF-IDF + bandit + MMR]

@@ -433,8 +433,8 @@ if __name__ == "__main__":
                 "source": random.choice(["Dawn", "BBC", "Ars Technica"]), "section": sec,
                 "read_minutes": random.randint(1, 8), "reasons": ["You like " + sec],
                 "image": None, "score": 0.5}
-    ed = {"id": "u-2026-10-17", "user_id": "u", "date": "2026-10-17", "title": "The Usaid Morning Post",
-          "edition_no": 7, "greeting": "Good morning, Usaid. Here is what mattered overnight.",
+    ed = {"id": "u-2026-10-17", "user_id": "u", "date": "2026-10-17", "title": "The Ali Morning Post",
+          "edition_no": 7, "greeting": "Good morning, Ali. Here is what mattered overnight.",
           "lead": dict(card("technology", 0), image="https://picsum.photos/600/400",
                        reasons=["You follow AI", "Trending in your city"]),
           "sections": [{"name": s, "articles": [card(s, i) for i in range(3)]} for s in secs],

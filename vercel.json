@@ -1,0 +1,3 @@
+{
+  "functions": { "api/index.py": { "includeFiles": "{backend,frontend,data,docs}/**", "maxDuration": 60 } }
+}

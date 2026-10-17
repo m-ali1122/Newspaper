@@ -1,4 +1,5 @@
-"""Ingest: live RSS + NAaaS archive CSVs -> enrich -> db."""
+"""Ingest: live RSS + news archive CSVs -> enrich -> db."""
+import os
 import csv
 import hashlib
 import html
@@ -12,7 +13,7 @@ from pathlib import Path
 from . import db, nlp
 
 csv.field_size_limit(10_000_000)
-ARCHIVE_ROOT = Path("/home/usaid/Desktop/NAaaS/scrapped_data/Scrapped News")
+ARCHIVE_ROOT = Path(os.environ.get("ARCHIVE_ROOT", "data/archive"))
 
 # name -> (url, source, section hint or None)
 FEEDS = {

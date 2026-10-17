@@ -1,5 +1,4 @@
 """Knowledge graph: entity co-occurrence, story threads, related entities.
-# Ported from NAaaS: graph-building-service-newsnet/services/story_chain/story_chain_builder.py (entity-overlap chains over time)
 """
 from collections import Counter, defaultdict
 from itertools import combinations

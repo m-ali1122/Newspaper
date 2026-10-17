@@ -11,4 +11,3 @@ numpy
 httpx
 jinja2
 python-multipart
-spacy

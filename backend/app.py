@@ -14,7 +14,6 @@ ROOT = Path(__file__).resolve().parent.parent
 FRONT = ROOT / "frontend"
 app = FastAPI(title="The Morning Paper")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
-FRONT.mkdir(exist_ok=True)
 app.mount("/static", StaticFiles(directory=str(FRONT)), name="static")
 
 
@@ -22,9 +21,19 @@ app.mount("/static", StaticFiles(directory=str(FRONT)), name="static")
 def index():
     f = FRONT / "index.html"
     if f.exists():
-        return HTMLResponse(f.read_text())
+        return HTMLResponse(f.read_text(encoding="utf-8"))
     return HTMLResponse("<h1>The Morning Paper</h1><p>Frontend not built yet. See /docs.</p>")
 
+
+
+@app.get("/architecture", response_class=HTMLResponse)
+def architecture():
+    svg = (ROOT / "docs" / "architecture.svg").read_text(encoding="utf-8")
+    return HTMLResponse(
+        "<!doctype html><meta charset=utf-8><title>Architecture · The Morning Paper</title>"
+        "<meta name=viewport content='width=device-width,initial-scale=1'>"
+        "<style>html,body{margin:0;background:#0a0f1f;min-height:100vh;display:grid;place-items:center}"
+        "svg{width:100%;height:auto;max-width:1620px}</style>" + svg)
 
 def _need(uid):
     p = db.get_profile(uid)
@@ -170,9 +179,9 @@ def kg_ep(user_id: str = ""):
 
 @app.post("/api/demo/seed")
 def seed():
-    uid = "usaid"
+    uid = "ali"
     if not db.get_profile(uid):
-        db.save_profile(P.new_profile("Usaid", "Karachi", ["technology", "climate", "business", "pakistan"],
+        db.save_profile(P.new_profile("Ali", "Karachi", ["technology", "climate", "business", "pakistan"],
                                       ["AI", "cricket", "startups"], [], "", "balanced", 15, user_id=uid))
     try:
         ed = E.build_edition(uid, force=True)
