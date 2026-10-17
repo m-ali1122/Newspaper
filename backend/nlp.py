@@ -121,7 +121,7 @@ def _stop():
 def batch_keywords(texts, k=6):
     try:
         from sklearn.feature_extraction.text import TfidfVectorizer
-        vec = TfidfVectorizer(stop_words=list(_stop()), ngram_range=(1, 2), min_df=1, max_df=0.5,
+        vec = TfidfVectorizer(stop_words=list(_stop()), ngram_range=(1, 1), min_df=1, max_df=0.5,
                               sublinear_tf=True, token_pattern=r"(?u)\b[A-Za-z][A-Za-z\-]{2,}\b")
         X = vec.fit_transform(texts)
         vocab = vec.get_feature_names_out()
@@ -189,7 +189,7 @@ LEX = {
               "pandemic",
     "climate": "climate warming carbon emissions flood floods monsoon heatwave drought wildfire environment pollution "
                "renewable solar wind energy glacier biodiversity deforestation cop29 cop30 weather rainfall temperature "
-               "sea level fossil fuels net zero green smog",
+               "sea-level fossil fuels net-zero smog",
     "sports": "cricket football match team players player coach league cup tournament goal wicket innings runs score "
               "olympic olympics tennis golf f1 formula fifa icc psl bcci champion final win won defeat season stadium "
               "batting bowler captain nba athlete medal premier",
@@ -219,14 +219,12 @@ def classify_section(title, text, hint=None) -> str:
         for w in words:
             sc += cnt.get(w, 0) if " " not in w else bigr.get(w, 0)
         scores[s] = sc
-    # multi-word lexicon phrases
-    for s, phrases in LEX.items():
-        pass
     if hinted:
         # strong hint: only override with text if hint is generic ('world'/'pakistan') and another section wins big
-        scores[hinted] += 3
-        if hinted == "pakistan":
-            scores["pakistan"] += 1
+        # Pakistani desks (national/karachi/...) also carry foreign wire copy: trust the
+        # hint only when the text itself has some Pakistani evidence
+        if hinted != "pakistan" or scores["pakistan"] > 0:
+            scores[hinted] += 3
     best = max(scores, key=scores.get)
     if scores[best] <= 0:
         return hinted or "world"
