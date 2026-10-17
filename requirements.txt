@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+feedparser
+reportlab
+scikit-learn
+nltk
+textblob
+vaderSentiment
+networkx
+numpy
+httpx
+jinja2
+python-multipart
+spacy

@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" font-family="Georgia, serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3261e"/></marker>
+    <style>
+      .box{fill:#fffdf6;stroke:#222;stroke-width:1.5}
+      .naas{fill:#eef3fb;stroke:#2b4f8a;stroke-width:1.5}
+      .h{font-size:15px;font-weight:bold;fill:#111}
+      .t{font-size:12px;fill:#333}
+      .lab{font-size:11px;fill:#555;font-style:italic}
+      .e{stroke:#222;stroke-width:1.4;fill:none;marker-end:url(#a)}
+      .fb{stroke:#b3261e;stroke-width:2;fill:none;stroke-dasharray:6 4;marker-end:url(#r)}
+    </style>
+  </defs>
+  <rect width="1100" height="700" fill="#f6f1e4"/>
+  <text x="550" y="38" text-anchor="middle" font-size="26" font-weight="bold">The Morning Paper — Architecture</text>
+  <line x1="60" y1="50" x2="1040" y2="50" stroke="#222" stroke-width="2"/>
+
+  <!-- Sources -->
+  <rect class="box" x="30" y="90" width="200" height="120"/>
+  <text class="h" x="45" y="113">Sources</text>
+  <text class="t" x="45" y="135">~15 live RSS feeds (BBC,</text>
+  <text class="t" x="45" y="151">Guardian, Dawn, Al Jazeera,</text>
+  <text class="t" x="45" y="167">Ars, HN, NASA …)</text>
+  <text class="t" x="45" y="187">NAaaS Express Tribune</text>
+  <text class="t" x="45" y="203">archive (7.5k CSVs)</text>
+
+  <!-- Ingest -->
+  <rect class="naas" x="290" y="90" width="230" height="150"/>
+  <text class="h" x="305" y="113">Ingest + NLP enrichment</text>
+  <text class="t" x="305" y="135">concurrent fetch, dedupe (sha1)</text>
+  <text class="t" x="305" y="153">spaCy NER + normaliser ★</text>
+  <text class="t" x="305" y="171">VADER+TextBlob sentiment ★</text>
+  <text class="t" x="305" y="189">TF-IDF / NMF keywords ★</text>
+  <text class="t" x="305" y="207">lexicon section classifier</text>
+  <text class="lab" x="305" y="230">★ ported from NAaaS</text>
+
+  <!-- Store -->
+  <rect class="box" x="590" y="90" width="200" height="150"/>
+  <text class="h" x="605" y="113">SQLite store</text>
+  <text class="t" x="605" y="135">articles</text>
+  <text class="t" x="605" y="153">profiles (weights, Beta</text>
+  <text class="t" x="605" y="169">  bandit, history)</text>
+  <text class="t" x="605" y="187">events (click, dwell, like,</text>
+  <text class="t" x="605" y="203">  skip, voice more/less)</text>
+  <text class="t" x="605" y="221">editions (archive)</text>
+
+  <!-- KG -->
+  <rect class="naas" x="850" y="90" width="220" height="150"/>
+  <text class="h" x="865" y="113">Knowledge graph</text>
+  <text class="t" x="865" y="135">entity co-occurrence graph</text>
+  <text class="t" x="865" y="153">(networkx, PageRank)</text>
+  <text class="t" x="865" y="171">story-chain threads ★</text>
+  <text class="t" x="865" y="189">interest expansion via</text>
+  <text class="t" x="865" y="205">  graph neighbours</text>
+
+  <!-- Ranker -->
+  <rect class="box" x="290" y="310" width="300" height="170"/>
+  <text class="h" x="305" y="333">Editor (ranking engine)</text>
+  <text class="t" x="305" y="355">TF-IDF cosine vs interest document</text>
+  <text class="t" x="305" y="373">+ section weights + recency decay</text>
+  <text class="t" x="305" y="391">+ Thompson sampling (Beta bandit)</text>
+  <text class="t" x="305" y="409">avoid-filter, near-dup removal</text>
+  <text class="t" x="305" y="427">MMR diversity re-rank</text>
+  <text class="t" x="305" y="445">ε-exploration "off your beaten path"</text>
+  <text class="t" x="305" y="463">explainable reasons per story</text>
+
+  <!-- Edition -->
+  <rect class="box" x="660" y="310" width="210" height="170"/>
+  <text class="h" x="675" y="333">Edition builder</text>
+  <text class="t" x="675" y="355">lead · sections · briefs</text>
+  <text class="t" x="675" y="373">serendipity · story threads</text>
+  <text class="t" x="675" y="391">knowledge map · mood</text>
+  <text class="t" x="675" y="409">personal greeting</text>
+  <text class="t" x="675" y="427">one per reader per day</text>
+
+  <!-- Outputs -->
+  <rect class="box" x="930" y="300" width="150" height="80"/>
+  <text class="h" x="945" y="325">Web reader</text>
+  <text class="t" x="945" y="345">FastAPI + vanilla JS</text>
+  <text class="t" x="945" y="362">archive · insights</text>
+  <rect class="box" x="930" y="400" width="150" height="80"/>
+  <text class="h" x="945" y="425">Broadsheet PDF</text>
+  <text class="t" x="945" y="445">reportlab, 3-column,</text>
+  <text class="t" x="945" y="462">clickable links</text>
+
+  <!-- Reader -->
+  <rect class="box" x="560" y="560" width="230" height="110"/>
+  <text class="h" x="575" y="583">Reader</text>
+  <text class="t" x="575" y="605">clicks through, likes, skips,</text>
+  <text class="t" x="575" y="621">dwells (IntersectionObserver),</text>
+  <text class="t" x="575" y="637">downloads PDF</text>
+
+  <!-- Voice -->
+  <rect class="box" x="30" y="560" width="300" height="110"/>
+  <text class="h" x="45" y="583">Voice editor harness</text>
+  <text class="t" x="45" y="605">Web Speech API → rule-based intent</text>
+  <text class="t" x="45" y="621">grammar ("more AI, less cricket",</text>
+  <text class="t" x="45" y="637">"read me the headlines") → profile</text>
+  <text class="t" x="45" y="653">update → spoken reply (TTS)</text>
+
+  <!-- Onboarding -->
+  <rect class="box" x="30" y="330" width="200" height="120"/>
+  <text class="h" x="45" y="353">Onboarding</text>
+  <text class="t" x="45" y="375">section cards, keywords,</text>
+  <text class="t" x="45" y="391">"in your own words" (voice),</text>
+  <text class="t" x="45" y="407">reading time, tone →</text>
+  <text class="t" x="45" y="423">seeded profile + KG expansion</text>
+
+  <!-- edges -->
+  <path class="e" d="M230,150 L288,150"/>
+  <path class="e" d="M520,165 L588,165"/>
+  <path class="e" d="M790,165 L848,165"/>
+  <path class="e" d="M690,240 L520,308"/>
+  <path class="e" d="M960,240 L800,308"/>
+  <path class="e" d="M590,395 L658,395"/>
+  <path class="e" d="M870,370 L928,345"/>
+  <path class="e" d="M870,420 L928,440"/>
+  <path class="e" d="M1000,480 L780,560"/>
+  <path class="e" d="M230,390 L288,390"/>
+  <text class="lab" x="300" y="300">profile + candidates</text>
+
+  <!-- feedback loop -->
+  <path class="fb" d="M560,620 C460,620 470,540 470,486"/>
+  <path class="fb" d="M330,615 L420,615 C440,615 440,560 430,486"/>
+  <path class="fb" d="M790,600 C860,600 760,260 700,242"/>
+  <text x="840" y="545" font-size="13" fill="#b3261e" font-weight="bold">Learning loop:</text>
+  <text x="840" y="562" font-size="12" fill="#b3261e">Rocchio update of keyword /</text>
+  <text x="840" y="578" font-size="12" fill="#b3261e">entity / section weights +</text>
+  <text x="840" y="594" font-size="12" fill="#b3261e">Beta(a,b) bandit update</text>
+</svg>
